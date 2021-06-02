@@ -1,6 +1,6 @@
 import { create } from "apisauce";
 import env from "react-dotenv";
-import middleware from "../middleware";
+import middleware from "../middleware/api";
 
 /**
  * Create API

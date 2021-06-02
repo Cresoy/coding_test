@@ -7,15 +7,13 @@ import { Button, Container, makeStyles, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { getAllProperties, getRentalByPropertyId } from "../api/property";
 import { logout } from "../api/auth";
-import { useHistory } from "react-router-dom";
 
 export default function Home() {
   const username = sessionStorage.getItem("user") || "";
 
   const styles = style();
-  const history = useHistory();
 
-  const [propertyId, setPropertyId] = useState(10);
+  const [propertyId, setPropertyId] = useState(0);
   const [properties, setProperties] = useState([]);
   const [rental, setRental] = useState({});
 
@@ -40,16 +38,15 @@ export default function Home() {
     const rental = await getRentalByPropertyId(initPropertyId);
 
     // save to states
+    setPropertyId(initPropertyId);
     setProperties(properties.data);
     setRental(rental.data);
-    setPropertyId(initPropertyId);
   };
 
   useEffect(() => {
-    // fetch data if accessToken is present in the session
-    if (sessionStorage.getItem("accessToken")) {
-      fetchInit();
-    } else history.replace("/login");
+    (async () => {
+      await fetchInit();
+    })();
   }, []);
 
   return (

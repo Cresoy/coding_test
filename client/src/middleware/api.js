@@ -1,18 +1,17 @@
+import { refreshSession } from "../api/auth";
+
 /**
  * Checks if the user is still authenticated during api call
  * and redirects to login if not
  * @param response
  */
-import { refreshSession } from "../api/auth";
-
 const authMiddleware = async (response) => {
   const clear = () => {
     sessionStorage.clear();
     window.location = "/login";
     alert("Session expired! Login again.");
   };
-  console.log(response);
-  if (response.status === 401) {
+  if (response.status === 401 && response.config.url !== "auth/token") {
     const refreshToken = sessionStorage.getItem("refreshToken");
     if (refreshToken) {
       // try to renew accessToken

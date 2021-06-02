@@ -9,9 +9,7 @@ import AuthSchema from "../models/auth";
  */
 export async function refreshToken(req, res) {
   const { user, token } = req.body;
-  const body = req.body;
 
-  console.log({ user, token, body });
   if (!token || !user) {
     return res.sendStatus(401);
   }

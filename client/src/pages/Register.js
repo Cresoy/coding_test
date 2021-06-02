@@ -12,13 +12,18 @@ import {
 } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { register } from "../api/auth";
 import { useHistory } from "react-router-dom";
+import redirectIfAuthenticated from "../middleware/pages";
 
 export default function Register() {
+  useEffect(() => {
+    redirectIfAuthenticated();
+  });
+
   const styles = style();
   const history = useHistory();
 
@@ -53,50 +58,52 @@ export default function Register() {
 
   return (
     <div className={styles.root}>
-      <Typography variant={"h4"} className={styles.title}>
-        Register
-      </Typography>
-      {error && <Typography color={"error"}>{error}</Typography>}
-      <TextField
-        placeholder={"Username"}
-        className={styles.input}
-        value={username}
-        onChange={(e) => {
-          setUsername(e.target.value);
-        }}
-        onKeyDown={onEnter}
-      />
-      <FormControl className={clsx(styles.input)}>
-        <InputLabel>Password</InputLabel>
-        <Input
-          type={showPass ? "text" : "password"}
-          value={password}
+      <div className={styles.form}>
+        <Typography variant={"h4"} className={styles.title}>
+          Register
+        </Typography>
+        {error && <Typography color={"error"}>{error}</Typography>}
+        <TextField
+          placeholder={"Username"}
+          className={styles.input}
+          value={username}
           onChange={(e) => {
-            setPassword(e.target.value);
+            setUsername(e.target.value);
           }}
           onKeyDown={onEnter}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton onClick={toggleShowPass}>
-                {showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
-              </IconButton>
-            </InputAdornment>
-          }
         />
-      </FormControl>
+        <FormControl className={clsx(styles.input)}>
+          <InputLabel>Password</InputLabel>
+          <Input
+            type={showPass ? "text" : "password"}
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            onKeyDown={onEnter}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton onClick={toggleShowPass}>
+                  {showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
 
-      {loading ? (
-        <CircularProgress size={30} className={styles.registerButton} />
-      ) : (
-        <Button
-          onClick={onRegister}
-          color={"primary"}
-          variant={"contained"}
-          className={styles.registerButton}
-        >
-          Register
-        </Button>
-      )}
+        {loading ? (
+          <CircularProgress size={30} className={styles.registerButton} />
+        ) : (
+          <Button
+            onClick={onRegister}
+            color={"primary"}
+            variant={"contained"}
+            className={styles.registerButton}
+          >
+            Register
+          </Button>
+        )}
+      </div>
 
       <Typography>
         Already registered?{" "}
@@ -115,8 +122,20 @@ const style = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: theme.palette.grey["200"],
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 8,
+    padding: theme.spacing(3),
+    marginBottom: theme.spacing(2),
+    backgroundColor: "white",
   },
   title: {
+    marginTop: theme.spacing(3),
     marginBottom: theme.spacing(5),
     fontWeight: "bold",
     color: theme.palette.primary.main,
