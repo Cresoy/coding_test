@@ -44,9 +44,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    (async () => {
-      await fetchInit();
-    })();
+    // redirects to login if no accessToken
+    if (sessionStorage.getItem("accessToken"))
+      (async () => {
+        await fetchInit();
+      })();
+    else window.location = "/login";
   }, []);
 
   return (
