@@ -9,7 +9,7 @@ import { getAllProperties, getRentalByPropertyId } from "../api/property";
 import { logout } from "../api/auth";
 import { useHistory } from "react-router-dom";
 
-export default function () {
+export default function Home() {
   const username = sessionStorage.getItem("user") || "";
 
   const styles = style();
@@ -33,7 +33,8 @@ export default function () {
   const fetchInit = async () => {
     // get all properties
     const properties = await getAllProperties();
-    const initPropertyId = properties.data[0].propertyId;
+    const initPropertyId = properties.data[0]?.propertyId;
+    if (!initPropertyId) return;
 
     // get data for first property
     const rental = await getRentalByPropertyId(initPropertyId);
@@ -45,10 +46,12 @@ export default function () {
   };
 
   useEffect(() => {
-    if (sessionStorage.getItem("refreshToken")) {
+    // fetch data if accessToken is present in the session
+    if (sessionStorage.getItem("accessToken")) {
       fetchInit();
     } else history.replace("/login");
   }, []);
+
   return (
     <>
       <Container fixed className={styles.header}>

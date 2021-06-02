@@ -1,6 +1,11 @@
 import { create } from "apisauce";
 import env from "react-dotenv";
+import middleware from "../middleware";
 
+/**
+ * Create API
+ * @type {ApisauceInstance}
+ */
 export const api = create({
   baseURL: env.API_URL,
   headers: {
@@ -8,21 +13,20 @@ export const api = create({
   },
 });
 
+/**
+ * Get API config for api calls
+ * @returns {Promise<{headers: {Authorization: string}}>}
+ */
 export const getAPIConfig = async () => {
   const token = await sessionStorage.getItem("accessToken");
   return {
     headers: {
-      Authorization: "Token " + token,
+      Authorization: "Bearer " + token,
     },
   };
 };
 
-const authMiddleware = (response) => {
-  if (response.status === 401) {
-    sessionStorage.clear();
-    window.location = "/login";
-    alert("Session expired. Login again.");
-  }
-};
-
-api.addMonitor(authMiddleware);
+/**
+ * Activate middlewares
+ */
+middleware(api);

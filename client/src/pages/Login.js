@@ -1,4 +1,3 @@
-import { useForm } from "react-hook-form";
 import { useState } from "react";
 import {
   Button,
@@ -17,29 +16,33 @@ import clsx from "clsx";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { useHistory } from "react-router-dom";
-import { login, register } from "../api/auth";
+import { login } from "../api/auth";
 
-export default function () {
+export default function Login() {
   const styles = style();
   const history = useHistory();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPass, setShowPass] = useState();
-  const toggleShowPass = () => setShowPass((showPass) => !showPass);
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const toggleShowPass = () => setShowPass((showPass) => !showPass);
 
   const onLogin = async () => {
     setError(null);
     setLoading(true);
+
     const response = await login({ username, password });
     setLoading(false);
     if (response.ok) {
+      // save info to session storage
       sessionStorage.setItem("user", response.data.user);
       sessionStorage.setItem("accessToken", response.data.accessToken);
       sessionStorage.setItem("refreshToken", response.data.refreshToken);
+
+      // redirect to homepage
       history.replace("/");
     } else if (response.data?.error) {
       setError(response.data.error);
@@ -72,6 +75,7 @@ export default function () {
         <Input
           type={showPass ? "text" : "password"}
           value={password}
+          required
           onChange={(e) => {
             setPassword(e.target.value);
           }}

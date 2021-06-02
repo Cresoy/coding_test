@@ -21,7 +21,7 @@ app.use(cors());
 
 // set up mongoose
 mongoose
-  .connect("mongodb://localhost:27017/PropertyData")
+  .connect(process.env.DB_URL)
   .then(() => {
     console.log("Database connected");
   })
@@ -29,7 +29,7 @@ mongoose
     console.log("Error connecting to database", error);
   });
 
-// set up route
+// set up routes
 app.use("/api/", routes);
 
 // populate config from env

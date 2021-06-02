@@ -18,24 +18,26 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { register } from "../api/auth";
 import { useHistory } from "react-router-dom";
 
-export default function () {
+export default function Register() {
   const styles = style();
   const history = useHistory();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPass, setShowPass] = useState();
-  const toggleShowPass = () => setShowPass((showPass) => !showPass);
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const toggleShowPass = () => setShowPass((showPass) => !showPass);
 
   const onRegister = async () => {
     setError(null);
     setLoading(true);
+
     const response = await register({ username, password });
     setLoading(false);
     if (response.ok) {
+      // redirects to login
       history.replace("/login");
       alert("Successfully registered. Login now");
     } else if (response.data?.error) {

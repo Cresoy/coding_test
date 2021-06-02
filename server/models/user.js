@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 mongoose.Promise = global.Promise;
 
+/**
+ * Define schema for User collection
+ * @type {module:mongoose.Schema<Document, Model<any, any, any>, undefined>}
+ */
 const UserSchema = new mongoose.Schema(
   {
     username: {

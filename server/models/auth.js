@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 mongoose.Promise = global.Promise;
 
+/**
+ * Define schema for Auth collection
+ * @type {module:mongoose.Schema<Document, Model<any, any, any>, undefined>}
+ */
 const AuthSchema = new mongoose.Schema(
   {
     username: String,

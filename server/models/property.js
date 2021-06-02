@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 mongoose.Promise = global.Promise;
 
+/**
+ * Define schema for Property Data collection
+ * @type {module:mongoose.Schema<Document, Model<any, any, any>, undefined>}
+ */
 const PropertyDataSchema = new mongoose.Schema(
   {
     propertyId: {
@@ -13,32 +17,32 @@ const PropertyDataSchema = new mongoose.Schema(
       required: true,
     },
     income: {
-      January: Number,
-      February: Number,
-      March: Number,
-      April: Number,
-      May: Number,
-      June: Number,
-      July: Number,
-      August: Number,
-      September: Number,
-      October: Number,
-      November: Number,
-      December: Number,
+      January: { type: Number, default: 0 },
+      February: { type: Number, default: 0 },
+      March: { type: Number, default: 0 },
+      April: { type: Number, default: 0 },
+      May: { type: Number, default: 0 },
+      June: { type: Number, default: 0 },
+      July: { type: Number, default: 0 },
+      August: { type: Number, default: 0 },
+      September: { type: Number, default: 0 },
+      October: { type: Number, default: 0 },
+      November: { type: Number, default: 0 },
+      December: { type: Number, default: 0 },
     },
     expense: {
-      January: Number,
-      February: Number,
-      March: Number,
-      April: Number,
-      May: Number,
-      June: Number,
-      July: Number,
-      August: Number,
-      September: Number,
-      October: Number,
-      November: Number,
-      December: Number,
+      January: { type: Number, default: 0 },
+      February: { type: Number, default: 0 },
+      March: { type: Number, default: 0 },
+      April: { type: Number, default: 0 },
+      May: { type: Number, default: 0 },
+      June: { type: Number, default: 0 },
+      July: { type: Number, default: 0 },
+      August: { type: Number, default: 0 },
+      September: { type: Number, default: 0 },
+      October: { type: Number, default: 0 },
+      November: { type: Number, default: 0 },
+      December: { type: Number, default: 0 },
     },
   },
   { collection: "propertyData" }

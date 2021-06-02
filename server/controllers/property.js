@@ -1,11 +1,22 @@
 import PropertyModel from "../models/property";
 
-// Get all property data
+/**
+ * Get all property data
+ * @param req
+ * @param res
+ */
 export function getAllProperties(req, res) {
   PropertyModel.find()
     .select("propertyId propertyName")
     .then((properties) => {
-      return res.status(200).json(properties);
+      const payload = [];
+      properties.forEach((item) => {
+        payload.push({
+          propertyId: item.propertyId,
+          propertyName: item.propertyName,
+        });
+      });
+      res.status(200).json(payload);
     })
     .catch((err) => {
       res.status(500).json({
@@ -16,13 +27,17 @@ export function getAllProperties(req, res) {
     });
 }
 
-// Get rental income by propertyId
+/**
+ * Get rental income by propertyId
+ * @param req
+ * @param res
+ */
 export function getRentalIncome(req, res) {
   const propertyId = req.query.propertyId;
   PropertyModel.find({ propertyId })
     .select("income")
     .then((properties) => {
-      return res.status(200).json(properties);
+      return res.status(200).json(properties[0].income);
     })
     .catch((err) => {
       res.status(500).json({
@@ -33,13 +48,20 @@ export function getRentalIncome(req, res) {
     });
 }
 
-// Get rental by propertyId
+/**
+ * Get rental by propertyId
+ * @param req
+ * @param res
+ */
 export function getRental(req, res) {
   const propertyId = req.query.propertyId;
   PropertyModel.find({ propertyId })
     .select("income expense")
     .then((properties) => {
-      return res.status(200).json(properties[0]);
+      return res.status(200).json({
+        expense: properties[0].expense,
+        income: properties[0].income,
+      });
     })
     .catch((err) => {
       res.status(500).json({
@@ -50,7 +72,12 @@ export function getRental(req, res) {
     });
 }
 
-// create new propertyData
+/**
+ * create new propertyData
+ * @param req
+ * @param res
+ * @returns {Promise<Document<any, any> | void>}
+ */
 export function createProperty(req, res) {
   const property = new PropertyModel({
     propertyId: req.body.propertyId,

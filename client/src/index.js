@@ -7,11 +7,9 @@ import { MuiThemeProvider } from "@material-ui/core";
 import theme from "./assets/theme";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <MuiThemeProvider theme={theme}>
-      <App />
-    </MuiThemeProvider>
-  </React.StrictMode>,
+  <MuiThemeProvider theme={theme}>
+    <App />
+  </MuiThemeProvider>,
   document.getElementById("root")
 );
 
